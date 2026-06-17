@@ -1,0 +1,48 @@
+- name: Task 3 - Build, test, and backup ID Card project
+  hosts: web
+  connection: local
+  gather_facts: false
+
+  vars:
+    project_dir: "/mnt/c/Users/Meng chhiv/Documents/idcardsystem/idcardsystem"
+    db_container: "idcard-mysql"
+    db_name: "B-SOPHAL_Mengchhiv-db"
+    db_user: "root"
+    db_password: "Hello@123"
+
+  tasks:
+    - name: Run git pull
+      command: git pull
+      args:
+        chdir: "{{ project_dir }}"
+      register: git_output
+
+    - name: Show git pull output
+      debug:
+        var: git_output.stdout_lines
+
+    - name: Build using Maven wrapper on Windows
+      command: cmd.exe /c mvnw.cmd clean package
+      args:
+       chdir: "{{ project_dir }}"
+      register: maven_output 
+
+    - name: Show Maven build output
+      debug:
+        var: maven_output.stdout_lines
+
+    - name: Create backup.sql from MySQL database
+      shell: docker exec {{ db_container }} mysqldump -u {{ db_user }} -p{{ db_password }} {{ db_name }} > backup.sql
+      args:
+        chdir: "{{ project_dir }}"
+      register: backup_output
+
+    - name: Confirm backup file exists
+      command: ls -lh backup.sql
+      args:
+        chdir: "{{ project_dir }}"
+      register: backup_file
+
+    - name: Show backup file info
+      debug:
+        var: backup_file.stdout_lines
