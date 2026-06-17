@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: idcard-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: idcard-web
+  template:
+    metadata:
+      labels:
+        app: idcard-web
+    spec:
+      containers:
+      - name: idcard-web
+        image: idcardsystem-web:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: idcard-web-service
+spec:
+  selector:
+    app: idcard-web
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: NodePort
