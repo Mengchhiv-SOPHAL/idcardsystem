@@ -1,0 +1,23 @@
+services:
+  web:
+    build: .
+    container_name: idcard-web
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+      - "2222:22"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/B-SOPHAL_Mengchhiv-db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Hello@123
+
+  mysql:
+    image: mysql:8.0
+    container_name: idcard-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Hello@123
+      MYSQL_DATABASE: B-SOPHAL_Mengchhiv-db
+    ports:
+      - "3307:3306"
