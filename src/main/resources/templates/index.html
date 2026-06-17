@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/style.css">
+    <title>ID Card System</title>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+    <h1>ID Card Management System</h1>
+    <div>
+        <a class="btn gray" href="/profiles/batch">Generate All PDFs</a>
+        <a class="btn" href="/profiles/new">+ Create New Profile</a>
+    </div>
+    </div>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Registration No</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Department</th>
+            <th>Actions</th>
+        </tr>
+
+        <tr th:each="profile : ${profiles}">
+            <td th:text="${profile.id}"></td>
+            <td th:text="${profile.registrationNumber}"></td>
+            <td th:text="${profile.fullName}"></td>
+            <td th:text="${profile.type}"></td>
+            <td th:text="${profile.department}"></td>
+            <td>
+                <a class="btn" th:href="@{/profiles/{id}(id=${profile.id})}">Preview</a>
+                <a class="btn gray" th:href="@{/profiles/edit/{id}(id=${profile.id})}">Edit</a>
+                <a class="btn red" th:href="@{/profiles/delete/{id}(id=${profile.id})}">Delete</a>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

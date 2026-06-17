@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ID Card Preview</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Live ID Card Preview</h1>
+        <a class="btn gray" href="/">Back</a>
+    </div>
+
+    <div class="id-card">
+        <h2>ID CARD</h2>
+
+        <img class="photo"
+             th:if="${profile.photoFileName}"
+             th:src="@{'/uploads/' + ${profile.photoFileName}}">
+
+        <div th:unless="${profile.photoFileName}" class="photo"
+             style="display:flex;align-items:center;justify-content:center;background:white;color:#1e40af;margin:auto;">
+            No Photo
+        </div>
+
+        <h2 th:text="${profile.fullName}"></h2>
+
+        <p><b>ID:</b> <span th:text="${profile.registrationNumber}"></span></p>
+        <p><b>UUID:</b> <span th:text="${profile.uuid}"></span></p>
+        <p><b>Department:</b> <span th:text="${profile.department}"></span></p>
+        <p><b>Title:</b> <span th:text="${profile.title}"></span></p>
+        <p><b>Type:</b> <span th:text="${profile.type}"></span></p>
+
+        <div class="code-box">
+            <img th:src="@{/profiles/qr/{id}(id=${profile.id})}" width="100">
+            <br>
+            <img th:src="@{/profiles/barcode/{id}(id=${profile.id})}" width="220">
+        </div>
+    </div>
+
+    <div style="text-align:center;">
+        <a class="btn" th:href="@{/profiles/pdf/{id}(id=${profile.id})}">Generate PDF</a>
+    </div>
+</div>
+
+</body>
+</html>
